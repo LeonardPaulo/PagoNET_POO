@@ -20,13 +20,8 @@
                                 {{ form.empleado }}
                             </div>
                             <div class="col-md-6">
-                                <label for="{{ form.aniomes.id_for_label }}" class="form-label">{{ form.aniomes.label }}</label>
-                                <input type="month" name="aniomes" id="id_aniomes" class="form-control" required>
-                                {% if form.aniomes.errors %}
-                                    <div class="alert alert-danger mt-2">
-                                        {{ form.aniomes.errors }}
-                                    </div>
-                                {% endif %}
+                                <label for="id_aniomes" class="form-label">Periodo</label>
+                                <input type="date" name="aniomes" id="id_aniomes" class="form-control" required>
                             </div>
                         </div>
 
@@ -81,6 +76,28 @@
 
 {% block extra_js %}
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const empleadoSelect = document.getElementById('id_empleado');
+    const sueldoInput = document.getElementById('id_sueldo');
+    
+    empleadoSelect.addEventListener('change', function() {
+        const empleadoId = this.value;
+        if (empleadoId) {
+            fetch(`/nomina/empleado/${empleadoId}/sueldo/`)
+                .then(response => response.json())
+                .then(data => {
+                    if(data.status === 'success') {
+                        sueldoInput.value = data.sueldo;
+                        // Dispara el evento change para recalcular
+                        const event = new Event('change');
+                        sueldoInput.dispatchEvent(event);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    });
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('rolPagoForm');
     const sueldoInput = document.getElementById('{{ form.sueldo.id_for_label }}');

@@ -291,19 +291,18 @@ def tipocontrato_delete(request, id):
         return render(request, 'tipocontrato/delete.html', context)
 
 def rolpago_list(request):
-    # doctors = Doctor.objects.all()
-    # print("doctors: ",doctors)
-    # print("doctores: ",doctors.values())
-    # print("metodo: ",request.method)
-    # print("valor de get: ",request.GET,request.GET.get('q'))
-    # return JsonResponse(list(doctors.values()), safe=False)
     query = request.GET.get('q', None)
     print(query)
+    
     if query:
-        roles_pago = Rol.objects.filter(empleado__name__icontains=query)
+        roles = Rol.objects.filter(empleado__nombre__icontains=query)
     else:
-        roles_pago = Rol.objects.all()
-    context = {'roles_pago': roles_pago, 'title': 'Listado de roles de pago'}
+        roles = Rol.objects.all().order_by('-aniomes')
+    
+    context = {
+        'roles': roles,
+        'title': 'Listado de roles de pago'
+    }
     return render(request, 'rolpago/list.html', context)
 
 def rolpago_create(request):
@@ -352,3 +351,5 @@ def rolpago_delete(request, id):
     except:
         context = {'title': 'Datos del Rol de Pago', 'rol_pago': rol_pago, 'error': 'Error al eliminar el rol de pago'}
         return render(request, 'rolpago/delete.html', context)
+    
+

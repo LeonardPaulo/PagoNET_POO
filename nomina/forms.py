@@ -201,6 +201,7 @@ class RolForm(forms.ModelForm):
         widget=forms.NumberInput(attrs={
             'class': 'form-control',
             'step': '0.01',
+            'placeholder': 'Ingrese el sueldo',
         }),
         label='Sueldo Base'
     )
@@ -260,13 +261,14 @@ class RolForm(forms.ModelForm):
             'empleado': Select(attrs={
                 'class': 'form-control'
             }),
-            'aniomes': forms.DateInput(format='%Y-%m', attrs={
-                'type': 'month'
-            }),
+            'aniomes': forms.DateInput(attrs={
+                'type': 'date'
+            }, format='%Y-%m-%d'),
             'sueldo': NumberInput(attrs={
                 'class': 'form-control',
                 'step': '0.01',
-                'readonly': 'readonly'
+                'min': '0',
+                'placeholder': 'Ingrese el sueldo base'
             }),
             'horas_extra': NumberInput(attrs={
                 'class': 'form-control',

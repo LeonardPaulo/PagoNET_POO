@@ -42,7 +42,7 @@ class Empleado(models.Model):
 
 class Rol(models.Model):
     empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
-    aniomes = models.DateField() 
+    aniomes = models.DateField()#202501
     sueldo = models.DecimalField(max_digits=10, decimal_places=2)
     horas_extra = models.DecimalField(max_digits=10, decimal_places=2)
     bono = models.DecimalField(max_digits=10, decimal_places=2)
