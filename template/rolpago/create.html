@@ -1,0 +1,123 @@
+{% extends "home.html" %}
+{% block title %}Crear Rol de Pago{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">{{ title }}</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" id="rolPagoForm">
+                        {% csrf_token %}
+                        
+                        <!-- Empleado y Periodo -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="{{ form.empleado.id_for_label }}" class="form-label">{{ form.empleado.label }}</label>
+                                {{ form.empleado }}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="{{ form.aniomes.id_for_label }}" class="form-label">{{ form.aniomes.label }}</label>
+                                <input type="month" name="aniomes" id="id_aniomes" class="form-control" required>
+                                {% if form.aniomes.errors %}
+                                    <div class="alert alert-danger mt-2">
+                                        {{ form.aniomes.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Sueldo, Horas Extra y Bono -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="{{ form.sueldo.id_for_label }}" class="form-label">{{ form.sueldo.label }}</label>
+                                {{ form.sueldo }}
+                            </div>
+                            <div class="col-md-4">
+                                <label for="{{ form.horas_extra.id_for_label }}" class="form-label">{{ form.horas_extra.label }}</label>
+                                {{ form.horas_extra }}
+                            </div>
+                            <div class="col-md-4">
+                                <label for="{{ form.bono.id_for_label }}" class="form-label">{{ form.bono.label }}</label>
+                                {{ form.bono }}
+                            </div>
+                        </div>
+
+                        <!-- IESS y Totales -->
+                        <div class="row mb-3">
+                            <div class="col-md-3">
+                                <label for="{{ form.iess.id_for_label }}" class="form-label">{{ form.iess.label }}</label>
+                                {{ form.iess }}
+                            </div>
+                            <div class="col-md-3">
+                                <label for="{{ form.tot_ing.id_for_label }}" class="form-label">{{ form.tot_ing.label }}</label>
+                                {{ form.tot_ing }}
+                            </div>
+                            <div class="col-md-3">
+                                <label for="{{ form.tot_des.id_for_label }}" class="form-label">{{ form.tot_des.label }}</label>
+                                {{ form.tot_des }}
+                            </div>
+                            <div class="col-md-3">
+                                <label for="{{ form.neto.id_for_label }}" class="form-label">{{ form.neto.label }}</label>
+                                {{ form.neto }}
+                            </div>
+                        </div>
+
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <a href="{% url 'nomina:rolpago_list' %}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('rolPagoForm');
+    const sueldoInput = document.getElementById('{{ form.sueldo.id_for_label }}');
+    const horasExtraInput = document.getElementById('{{ form.horas_extra.id_for_label }}');
+    const bonoInput = document.getElementById('{{ form.bono.id_for_label }}');
+    const iessInput = document.getElementById('{{ form.iess.id_for_label }}');
+    const totIngInput = document.getElementById('{{ form.tot_ing.id_for_label }}');
+    const totDesInput = document.getElementById('{{ form.tot_des.id_for_label }}');
+    const netoInput = document.getElementById('{{ form.neto.id_for_label }}');
+
+    // Función para calcular todos los valores
+    function calcularValores() {
+        const sueldo = parseFloat(sueldoInput.value) || 0;
+        const horasExtra = parseFloat(horasExtraInput.value) || 0;
+        const bono = parseFloat(bonoInput.value) || 0;
+
+        // Cálculo del IESS (9.45%)
+        const iessPorc = 9.45;
+        const iessValor = (sueldo * iessPorc / 100).toFixed(2);
+        iessInput.value = iessValor;
+
+        // Cálculo del total de ingresos
+        const totalIngresos = (sueldo + horasExtra + bono).toFixed(2);
+        totIngInput.value = totalIngresos;
+
+        // Total descuentos (solo IESS por ahora)
+        totDesInput.value = iessValor;
+
+        // Valor neto
+        const valorNeto = (parseFloat(totalIngresos) - parseFloat(iessValor)).toFixed(2);
+        netoInput.value = valorNeto;
+    }
+
+    // Eventos para recalcular cuando cambian los valores
+    sueldoInput.addEventListener('input', calcularValores);
+    horasExtraInput.addEventListener('input', calcularValores);
+    bonoInput.addEventListener('input', calcularValores);
+});
+</script>
+{% endblock %}
