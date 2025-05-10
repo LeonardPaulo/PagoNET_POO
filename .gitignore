@@ -1,0 +1,12 @@
+# Entornos virtuales
+env/
+venv/
+.venv/
+
+# Archivos de Python compilados
+__pycache__/
+*.py[cod]
+
+# Archivos personales o de configuración
+*.env
+*.sqlite3
