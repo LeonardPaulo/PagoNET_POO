@@ -26,7 +26,7 @@ class RolAdmin(admin.ModelAdmin):
         ('Ingresos', {
             'fields': ('sueldo', 'horas_extra', 'bono')
         }),
-        ('Cálculos Automáticos (No editable)', {
+        ('Cálculos Automáticos', {
             'fields': ('iess', 'tot_ing', 'tot_des', 'neto'),
             'classes': ('collapse',)
         }),

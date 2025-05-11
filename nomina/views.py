@@ -2,6 +2,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from .models import Empleado, Cargo, Departamento, TipoContrato, Rol
 from .forms import EmpleadoForm, CargoForm, DepartamentoForm, TipoContratoForm, RolForm
+from django.db.models import Q
 
 def home(request):
     data = {
@@ -17,17 +18,25 @@ def home(request):
     return render(request, 'home.html', data)
 
 def empleado_list(request):
-    # doctors = Doctor.objects.all()
-    # print("doctors: ",doctors)
-    # print("doctores: ",doctors.values())
-    # print("metodo: ",request.method)
-    # print("valor de get: ",request.GET,request.GET.get('q'))
-    # return JsonResponse(list(doctors.values()), safe=False)
-    query= request.GET.get('q',None)
-    print(query)
-    if query: empleados = Empleado.objects.filter(nombre__icontains=query)
-    else: empleados = Empleado.objects.all()
-    context = {'empleados': empleados, 'title': 'Listado de empleados'}
+    query = request.GET.get('q', None)
+    if query:
+        empleados = Empleado.objects.filter(
+            Q(nombre__icontains=query) |          # Búsqueda por nombre
+            Q(cedula__icontains=query) |          # Búsqueda por cédula
+            Q(direccion__icontains=query) |       # Búsqueda por dirección
+            Q(cargo__descripcion__icontains=query) |  # Búsqueda por cargo
+            Q(departamento__descripcion__icontains=query) |  # Búsqueda por departamento
+            Q(tipo_contrato__descripcion__icontains=query) |  # Búsqueda por tipo de contrato
+            Q(sexo__icontains=query)              # Búsqueda por sexo (M/F)
+        ).distinct().order_by('nombre')  # Orden alfabético por nombre
+    else:
+        empleados = Empleado.objects.all().order_by('nombre')
+    
+    context = {
+        'empleados': empleados,
+        'title': 'Listado de empleados',
+        'query': query  # Para mantener el término de búsqueda en el template
+    }
     return render(request, 'empleado/list.html', context)
 
 def empleado_create(request):
@@ -292,16 +301,26 @@ def tipocontrato_delete(request, id):
 
 def rolpago_list(request):
     query = request.GET.get('q', None)
-    print(query)
     
     if query:
-        roles = Rol.objects.filter(empleado__nombre__icontains=query)
+        roles = Rol.objects.filter(
+            Q(empleado__nombre__icontains=query) |    # Búsqueda por nombre de empleado
+            Q(empleado__cedula__icontains=query) |    # Búsqueda por cédula de empleado
+            Q(aniomes__icontains=query) |             # Búsqueda por periodo (formato YYYY-MM)
+            Q(sueldo__icontains=query) |              # Búsqueda por monto de sueldo
+            Q(horas_extra__icontains=query) |         # Búsqueda por horas extra
+            Q(bono__icontains=query) |                # Búsqueda por bono
+            Q(neto__icontains=query) |                # Búsqueda por neto
+            Q(empleado__cargo__descripcion__icontains=query) |  # Búsqueda por cargo del empleado
+            Q(empleado__departamento__descripcion__icontains=query)  # Búsqueda por departamento
+        ).distinct().order_by('-aniomes', 'empleado__nombre')  # Orden por fecha descendente y nombre
     else:
-        roles = Rol.objects.all().order_by('-aniomes')
+        roles = Rol.objects.all().order_by('-aniomes', 'empleado__nombre')
     
     context = {
         'roles': roles,
-        'title': 'Listado de roles de pago'
+        'title': 'Listado de roles de pago',
+        'query': query  # Para mantener el término de búsqueda en el template
     }
     return render(request, 'rolpago/list.html', context)
 

@@ -64,3 +64,4 @@ class Rol(models.Model):
             self.tot_des = self.iess
             self.neto = self.tot_ing - self.tot_des
             super().save(*args, **kwargs)
+
