@@ -130,13 +130,41 @@
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Empleado</th>
-                            <th scope="col">Periodo</th>
-                            <th scope="col">Sueldo Base</th>
-                            <th scope="col">Total Ingresos</th>
-                            <th scope="col">Total Descuentos</th>
-                            <th scope="col">Valor Neto</th>
+                            <th scope="col">
+                                <a href="?order_by=id&direction={% if order_by == 'id' and direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                                    N° {% if order_by == 'id' %}{% if direction == 'asc' %}↓{% else %}↑{% endif %}{% endif %}
+                                </a>
+                            </th>
+                            <th scope="col">
+                                <a href="?order_by=empleado__nombre&direction={% if order_by == 'empleado__nombre' and direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                                    Empleado {% if order_by == 'empleado__nombre' %}{% if direction == 'asc' %}↓{% else %}↑{% endif %}{% endif %}
+                                </a>
+                            </th>
+                            <th scope="col">
+                                <a href="?order_by=aniomes&direction={% if order_by == 'aniomes' and direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                                    Periodo {% if order_by == 'aniomes' %}{% if direction == 'asc' %}↓{% else %}↑{% endif %}{% endif %}
+                                </a>
+                            </th>
+                            <th scope="col">
+                                <a href="?order_by=sueldo&direction={% if order_by == 'sueldo' and direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                                    Sueldo Base {% if order_by == 'sueldo' %}{% if direction == 'asc' %}↓{% else %}↑{% endif %}{% endif %}
+                                </a>
+                            </th>
+                            <th scope="col">
+                                <a href="?order_by=tot_ing&direction={% if order_by == 'tot_ing' and direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                                    Ingresos Totales {% if order_by == 'tot_ing' %}{% if direction == 'asc' %}↓{% else %}↑{% endif %}{% endif %}
+                                </a>
+                            </th>
+                            <th scope="col">
+                                <a href="?order_by=iess&direction={% if order_by == 'iess' and direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                                    Descuento IESS {% if order_by == 'iess' %}{% if direction == 'asc' %}↓{% else %}↑{% endif %}{% endif %}
+                                </a>
+                            </th>
+                            <th scope="col">
+                                <a href="?order_by=neto&direction={% if order_by == 'neto' and direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                                    Sueldo Neto {% if order_by == 'neto' %}{% if direction == 'asc' %}↓{% else %}↑{% endif %}{% endif %}
+                                </a>
+                            </th>
                             <th scope="col" class="text-center">Acciones</th>
                         </tr>
                     </thead>
@@ -171,15 +199,33 @@
     </div>
     <nav aria-label="Page navigation" class="mb-4">
         <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
-            </li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">Siguiente</a>
-            </li>
+            {% if roles.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ roles.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if order_by %}&order_by={{ order_by }}{% endif %}{% if direction %}&direction={{ direction }}{% endif %}">Anterior</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
+                </li>
+            {% endif %}
+
+            {% for num in roles.paginator.page_range %}
+                {% if roles.number == num %}
+                    <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if order_by %}&order_by={{ order_by }}{% endif %}{% if direction %}&direction={{ direction }}{% endif %}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if roles.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ roles.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if order_by %}&order_by={{ order_by }}{% endif %}{% if direction %}&direction={{ direction }}{% endif %}">Siguiente</a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-disabled="true">Siguiente</a>
+                </li>
+            {% endif %}
         </ul>
     </nav>
 </div>
