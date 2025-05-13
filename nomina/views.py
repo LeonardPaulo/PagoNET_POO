@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from .models import Empleado, Cargo, Departamento, TipoContrato, Rol
 from .forms import EmpleadoForm, CargoForm, DepartamentoForm, TipoContratoForm, RolForm
 from django.db.models import Q
+from django.contrib.auth.forms import UserCreationForm
 
 def home(request):
     data = {
@@ -17,6 +18,9 @@ def home(request):
     #return JsonResponse(data)  
     return render(request, 'home.html', data)
 
+def singup(request):
+    return HttpResponse("<h1>Hola Mundo, Mi primer pagina con django</h1>")
+
 def empleado_list(request):
     query = request.GET.get('q', None)
     if query:
@@ -27,7 +31,7 @@ def empleado_list(request):
             Q(cargo__descripcion__icontains=query) |  # Búsqueda por cargo
             Q(departamento__descripcion__icontains=query) |  # Búsqueda por departamento
             Q(tipo_contrato__descripcion__icontains=query) |  # Búsqueda por tipo de contrato
-            Q(sexo__icontains=query)              # Búsqueda por sexo (M/F)
+            Q(sexo__icontains=query)              # Búsqueda por sexo 
         ).distinct().order_by('nombre')  # Orden alfabético por nombre
     else:
         empleados = Empleado.objects.all().order_by('nombre')
