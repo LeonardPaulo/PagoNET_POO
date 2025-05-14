@@ -11,336 +11,254 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary-color: #2c6ecd;
-      --secondary-color: #19b3b3;
-      --accent-color: #f8f9fa;
-      --dark-color: #212529;
-      --text-color: #495057;
-    }
-    
-    body {
-      font-family: 'Poppins', sans-serif;
-      color: var(--text-color);
-      overflow-x: hidden;
-    }
-    
-    .navbar {
-      box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-      padding: 15px 0;
-    }
-    
-    .navbar-brand {
-      font-weight: 700;
-      color: var(--primary-color);
-      font-size: 1.5rem;
-    }
-    
-    .nav-link {
-      font-weight: 500;
-      color: var(--dark-color);
-      margin: 0 10px;
-      transition: all 0.3s ease;
-    }
-    
-    .nav-link:hover, .nav-link.active {
-      color: var(--primary-color);
-    }
-    
-    .navbar-toggler {
-      border: none;
-      outline: none;
-    }
-    
-    .btn-primary {
-      background-color: var(--primary-color);
-      border-color: var(--primary-color);
-      padding: 10px 25px;
-      border-radius: 50px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-    }
-    
-    .btn-primary:hover {
-      background-color: transparent;
-      color: var(--primary-color);
-      border-color: var(--primary-color);
-    }
-    
-    .btn-outline-primary {
-      border-color: var(--primary-color);
-      color: var(--primary-color);
-      padding: 10px 25px;
-      border-radius: 50px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-    }
-    
-    .btn-outline-primary:hover {
-      background-color: var(--primary-color);
-      color: white;
-    }
-    
-    .hero {
-      background: linear-gradient(135deg, rgba(44, 110, 205, 0.05) 0%, rgba(25, 179, 179, 0.05) 100%);
-      padding: 100px 0;
-      position: relative;
-      overflow: hidden;
-    }
-    
+<style>
+  :root {
+    --primary-color: #2d6cdf;
+    --secondary-color: #17a2b8;
+    --light-bg: #f9fbfc;
+    --dark-color: #1e1e2f;
+    --text-color: #444;
+    --highlight-color: #e8f0fe;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-color);
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  .navbar {
+    background-color: white !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  .navbar-brand {
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: var(--primary-color) !important;
+  }
+
+  .nav-link {
+    font-weight: 500;
+    color: var(--dark-color);
+    transition: color 0.3s ease;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--primary-color);
+  }
+
+  .btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 30px;
+    padding: 10px 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--secondary-color);
+    color: #fff;
+  }
+
+  .btn-outline-primary {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    border-radius: 30px;
+    padding: 10px 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #e8f0fe 0%, #d9f5f5 100%);
+    padding: 100px 0;
+    position: relative;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--dark-color);
+  }
+
+  .hero p {
+    font-size: 1.15rem;
+    color: #666;
+  }
+
+  .hero-img {
+    animation: float 4s ease-in-out infinite;
+    max-width: 100%;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+  }
+
+  .feature-box {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    padding: 30px;
+    transition: all 0.3s ease;
+  }
+
+  .feature-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+  }
+
+  .feature-icon {
+    background: var(--highlight-color);
+    color: var(--primary-color);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+
+  .testimonial {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    text-align: left;
+  }
+
+  .testimonial-author {
+    font-weight: 600;
+    color: var(--dark-color);
+  }
+
+  .testimonial-position {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+  }
+
+  .app-download {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: #fff;
+    padding: 70px 0;
+  }
+
+  .download-btn {
+    background: #fff;
+    color: var(--primary-color);
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .download-btn:hover {
+    background-color: #f1f1f1;
+    transform: translateY(-3px);
+  }
+
+  footer {
+    background-color: var(--dark-color);
+    color: rgba(255, 255, 255, 0.75);
+    padding: 60px 0 20px;
+  }
+
+  .footer-link {
+    color: rgba(255, 255, 255, 0.7);
+    display: block;
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .footer-link:hover {
+    color: white;
+    transform: translateX(5px);
+  }
+
+  .social-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+
+  .social-icon:hover {
+    background-color: var(--primary-color);
+  }
+
+  .floating-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 56px;
+    height: 56px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    transition: all 0.3s ease;
+    z-index: 1050;
+  }
+
+  .floating-btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-4px);
+  }
+
+  .stats-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    text-align: center;
+  }
+
+  .stats-number {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+  }
+
+  .stats-text {
+    color: var(--text-color);
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 767.98px) {
     .hero h1 {
-      font-weight: 700;
-      font-size: 3rem;
-      margin-bottom: 20px;
-      color: var(--dark-color);
+      font-size: 2rem;
     }
-    
     .hero p {
-      font-size: 1.2rem;
-      margin-bottom: 30px;
+      font-size: 1rem;
     }
-    
-    .hero-img {
-      max-width: 100%;
-      animation: float 3s ease-in-out infinite;
-    }
-    
-    @keyframes float {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-15px); }
-      100% { transform: translateY(0px); }
-    }
-    
-    .feature-box {
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-      transition: all 0.3s ease;
-      height: 100%;
-      background-color: white;
-    }
-    
-    .feature-box:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-    }
-    
-    .feature-icon {
-      width: 70px;
-      height: 70px;
-      background-color: rgba(44, 110, 205, 0.1);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 20px;
-      color: var(--primary-color);
-      font-size: 1.5rem;
-    }
-    
-    .feature-title {
-      font-weight: 600;
-      margin-bottom: 15px;
-      color: var(--dark-color);
-    }
-    
-    .testimonial {
-      background-color: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-      margin: 20px 10px;
-      height: 100%;
-    }
-    
-    .testimonial-img {
-      width: 70px;
-      height: 70px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-right: 15px;
-    }
-    
-    .testimonial-author {
-      font-weight: 600;
-      margin-bottom: 0;
-      color: var(--dark-color);
-    }
-    
-    .testimonial-position {
-      font-size: 0.9rem;
-      color: var(--primary-color);
-    }
-    
-    .app-download {
-      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-      padding: 80px 0;
-      color: white;
-    }
-    
-    .app-download h2 {
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
-    
-    .download-btn {
-      background-color: white;
-      color: var(--primary-color);
-      padding: 15px 25px;
-      border-radius: 50px;
-      display: inline-flex;
-      align-items: center;
-      margin: 10px;
-      transition: all 0.3s ease;
-      font-weight: 500;
-    }
-    
-    .download-btn:hover {
-      background-color: rgba(255, 255, 255, 0.9);
-      transform: translateY(-5px);
-    }
-    
-    .download-btn i {
-      font-size: 1.5rem;
-      margin-right: 10px;
-    }
-    
-    footer {
-      background-color: var(--dark-color);
-      color: rgba(255, 255, 255, 0.7);
-      padding: 70px 0 20px;
-    }
-    
-    .footer-heading {
-      color: white;
-      font-weight: 600;
-      margin-bottom: 25px;
-    }
-    
-    .footer-link {
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 15px;
-      display: block;
-      transition: all 0.3s ease;
-    }
-    
-    .footer-link:hover {
-      color: white;
-      transform: translateX(5px);
-    }
-    
-    .social-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.1);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      margin-right: 10px;
-      color: white;
-      transition: all 0.3s ease;
-    }
-    
-    .social-icon:hover {
-      background-color: var(--primary-color);
-      transform: translateY(-5px);
-    }
-    
-    .copyright {
-      padding-top: 20px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      margin-top: 50px;
-    }
-    
-    .floating-btn {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background-color: var(--primary-color);
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      z-index: 999;
-      transition: all 0.3s ease;
-    }
-    
-    .floating-btn:hover {
-      background-color: var(--secondary-color);
-      transform: translateY(-5px);
-    }
-    
-    /* Stats section */
-    .stats-card {
-      background-color: white;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-      text-align: center;
-      height: 100%;
-    }
-    
-    .stats-icon {
-      width: 50px;
-      height: 50px;
-      background-color: rgba(44, 110, 205, 0.1);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 15px;
-      color: var(--primary-color);
-      font-size: 1.2rem;
-    }
-    
-    .stats-number {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--dark-color);
-      margin-bottom: 5px;
-    }
-    
-    .stats-text {
-      color: var(--text-color);
-      font-size: 0.9rem;
-    }
-    
-    /* Responsive */
-    @media (max-width: 991.98px) {
-      .hero h1 {
-        font-size: 2.5rem;
-      }
-      
-      .hero-img {
-        margin-top: 50px;
-      }
-    }
-    
-    @media (max-width: 767.98px) {
-      .hero {
-        padding: 70px 0;
-      }
-      
-      .hero h1 {
-        font-size: 2rem;
-      }
-      
-      .hero p {
-        font-size: 1rem;
-      }
-      
-      .feature-box, .testimonial {
-        margin-bottom: 30px;
-      }
-    }
-  </style>
+  }
+</style>
   {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -373,18 +291,16 @@
                 </li>
             </ul>
             <div class="d-flex">
-    {% if user.is_authenticated %}
-        <!-- Mostrar solo "Cerrar Sesión" si el usuario está autenticado -->
-        <a href="{% url 'logout' %}" class="btn btn-outline-primary me-2">Cerrar Sesión</a>
-    {% else %}
-        <!-- Mostrar "Registrarse" e "Iniciar Sesión" si el usuario no está autenticado -->
-        <a href="{% url 'registro' %}" class="btn btn-primary me-2">Registrarse</a>
-        <a href="{% url 'login' %}" class="btn btn-outline-primary">Iniciar Sesión</a>
-    {% endif %}
-</div>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="btn btn-outline-primary me-2">Cerrar Sesión</a>
+                {% else %}
+                    <a href="{% url 'registro' %}" class="btn btn-primary me-2">Registrarse</a>
+                    <a href="{% url 'login' %}" class="btn btn-outline-primary">Iniciar Sesión</a>
+                {% endif %}
+            </div>
         </div>
     </div>
-</nav>
+  </nav>
 
   <!-- Seccion de contenido  -->
   {% block content %}
@@ -395,12 +311,12 @@
           <h1>{{description}}</h1>
           <p class="text-muted">{{doctores}}</p>
           <div class="d-flex flex-wrap">
-            <a href="#" class="btn btn-primary me-3 mb-2">Comenzar ahora</a>
-            <a href="#" class="btn btn-outline-primary mb-2">Ver demostración</a>
+            <a href="{% url 'registro' %}" class="btn btn-primary me-3 mb-2">Registrarse</a>
+            <a href="{% url 'login' %}" class="btn btn-outline-primary mb-2">Iniciar Sesión</a>
           </div>
         </div>
         <div class="col-lg-6">
-          <img src={% static 'img/fondo.png' %} alt="Doctor App Dashboard" class="hero-img img-fluid">
+          <img src={% static 'img/Fondo.png' %} alt="PagoNET Dashboard" class="hero-img img-fluid">
         </div>
       </div>
     </div>
@@ -413,37 +329,37 @@
         <div class="col-md-3 col-6 mb-4 mb-md-0">
           <div class="stats-card">
             <div class="stats-icon">
-              <i class="fas fa-user-md"></i>
+              <i class="fas fa-user"></i>
             </div>
-            <h3 class="stats-number">5,000+</h3>
-            <p class="stats-text">Médicos registrados</p>
+            <h3 class="stats-number">50,000+</h3>
+            <p class="stats-text">Usuarios activos</p>
           </div>
         </div>
         <div class="col-md-3 col-6 mb-4 mb-md-0">
           <div class="stats-card">
             <div class="stats-icon">
-              <i class="fas fa-calendar-check"></i>
+              <i class="fas fa-money-check-alt"></i>
             </div>
-            <h3 class="stats-number">2M+</h3>
-            <p class="stats-text">Citas gestionadas</p>
+            <h3 class="stats-number">$10M+</h3>
+            <p class="stats-text">Pagos procesados</p>
           </div>
         </div>
         <div class="col-md-3 col-6">
           <div class="stats-card">
             <div class="stats-icon">
-              <i class="fas fa-hospital-user"></i>
+              <i class="fas fa-building"></i>
             </div>
-            <h3 class="stats-number">500K+</h3>
-            <p class="stats-text">Pacientes atendidos</p>
+            <h3 class="stats-number">8,000+</h3>
+            <p class="stats-text">Empresas afiliadas</p>
           </div>
         </div>
         <div class="col-md-3 col-6">
           <div class="stats-card">
             <div class="stats-icon">
-              <i class="fas fa-clock"></i>
+              <i class="fas fa-thumbs-up"></i>
             </div>
-            <h3 class="stats-number">98%</h3>
-            <p class="stats-text">Satisfacción</p>
+            <h3 class="stats-number">99%</h3>
+            <p class="stats-text">Satisfacción del cliente</p>
           </div>
         </div>
       </div>
@@ -456,62 +372,62 @@
       <div class="row justify-content-center text-center mb-5">
         <div class="col-lg-6">
           <h2 class="fw-bold mb-3">Características principales</h2>
-          <p class="text-muted">Descubra cómo MediConsult Pro puede transformar su práctica médica con funciones diseñadas para profesionales de la salud.</p>
+          <p class="text-muted">Descubre cómo PagoNET simplifica tus procesos de nómina y pagos.</p>
         </div>
       </div>
       <div class="row">
         <div class="col-lg-4 col-md-6 mb-4">
           <div class="feature-box">
             <div class="feature-icon">
-              <i class="fas fa-calendar-alt"></i>
+              <i class="fas fa-wallet"></i>
             </div>
-            <h4 class="feature-title">Gestión de citas</h4>
-            <p>Programe, reprograme y cancele citas con facilidad. Envío automático de recordatorios a pacientes.</p>
+            <h4 class="feature-title">Gestión de pagos</h4>
+            <p>Automatiza pagos de salarios, bonificaciones y beneficios en pocos pasos.</p>
           </div>
         </div>
         <div class="col-lg-4 col-md-6 mb-4">
           <div class="feature-box">
             <div class="feature-icon">
-              <i class="fas fa-file-medical-alt"></i>
+              <i class="fas fa-file-invoice-dollar"></i>
             </div>
-            <h4 class="feature-title">Historial médico digital</h4>
-            <p>Mantenga registros completos de pacientes. Acceda al historial médico, diagnósticos y tratamientos al instante.</p>
+            <h4 class="feature-title">Comprobantes electrónicos</h4>
+            <p>Genera y envía recibos de pago directamente a tus empleados.</p>
           </div>
         </div>
         <div class="col-lg-4 col-md-6 mb-4">
           <div class="feature-box">
             <div class="feature-icon">
-              <i class="fas fa-pills"></i>
+              <i class="fas fa-users-cog"></i>
             </div>
-            <h4 class="feature-title">Gestión de medicamentos</h4>
-            <p>Emita recetas electrónicas y haga seguimiento de medicamentos prescritos con alertas automáticas.</p>
+            <h4 class="feature-title">Control de empleados</h4>
+            <p>Registra cargos, contratos y departamentos con precisión.</p>
           </div>
         </div>
         <div class="col-lg-4 col-md-6 mb-4">
           <div class="feature-box">
             <div class="feature-icon">
-              <i class="fas fa-comments"></i>
+              <i class="fas fa-shield-alt"></i>
             </div>
-            <h4 class="feature-title">Chat médico seguro</h4>
-            <p>Comuníquese con sus pacientes de forma segura y envíe resultados o indicaciones con total confidencialidad.</p>
+            <h4 class="feature-title">Seguridad garantizada</h4>
+            <p>Tus datos están protegidos con cifrado y acceso restringido.</p>
           </div>
         </div>
         <div class="col-lg-4 col-md-6 mb-4">
           <div class="feature-box">
             <div class="feature-icon">
-              <i class="fas fa-chart-line"></i>
+              <i class="fas fa-chart-pie"></i>
             </div>
-            <h4 class="feature-title">Análisis y reportes</h4>
-            <p>Obtenga estadísticas detalladas sobre pacientes, ingresos y tendencias para optimizar su práctica.</p>
+            <h4 class="feature-title">Reportes financieros</h4>
+            <p>Obtén reportes detallados para facilitar tu contabilidad y toma de decisiones.</p>
           </div>
         </div>
         <div class="col-lg-4 col-md-6 mb-4">
           <div class="feature-box">
             <div class="feature-icon">
-              <i class="fas fa-lock"></i>
+              <i class="fas fa-sync-alt"></i>
             </div>
-            <h4 class="feature-title">Seguridad avanzada</h4>
-            <p>Protección de datos conforme a normativas sanitarias con cifrado de extremo a extremo.</p>
+            <h4 class="feature-title">Integraciones</h4>
+            <p>Conéctate con bancos y sistemas contables en tiempo real.</p>
           </div>
         </div>
       </div>
@@ -523,15 +439,15 @@
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-6 order-lg-2 mb-4 mb-lg-0">
-          <h2 class="fw-bold mb-4">Interfaz intuitiva y fácil de usar</h2>
-          <p class="mb-4">Nuestra aplicación está diseñada pensando en la eficiencia. Con una interfaz clara e intuitiva, podrá gestionar todas las tareas médicas sin complicaciones.</p>
+          <h2 class="fw-bold mb-4">Interfaz simple y poderosa</h2>
+          <p class="mb-4">Gestiona todas tus operaciones de pago desde un solo lugar con facilidad y velocidad.</p>
           <div class="d-flex mb-3">
             <div class="me-3 text-primary">
               <i class="fas fa-check-circle fa-2x"></i>
             </div>
             <div>
-              <h5>Panel principal personalizable</h5>
-              <p class="text-muted">Adapte la vista según sus necesidades y especialidad médica.</p>
+              <h5>Panel intuitivo</h5>
+              <p class="text-muted">Accede rápidamente a las funciones más importantes.</p>
             </div>
           </div>
           <div class="d-flex mb-3">
@@ -539,8 +455,8 @@
               <i class="fas fa-check-circle fa-2x"></i>
             </div>
             <div>
-              <h5>Navegación simplificada</h5>
-              <p class="text-muted">Acceda a todas las funciones con pocos clics para ahorrar tiempo valioso.</p>
+              <h5>Multiplataforma</h5>
+              <p class="text-muted">Funciona desde cualquier dispositivo sin necesidad de instalación.</p>
             </div>
           </div>
           <div class="d-flex">
@@ -548,138 +464,112 @@
               <i class="fas fa-check-circle fa-2x"></i>
             </div>
             <div>
-              <h5>Compatible con todos los dispositivos</h5>
-              <p class="text-muted">Trabaje desde su computadora, tablet o smartphone sin limitaciones.</p>
+              <h5>Actualizaciones automáticas</h5>
+              <p class="text-muted">Siempre tendrás las últimas mejoras sin preocuparte por actualizaciones manuales.</p>
             </div>
           </div>
         </div>
         <div class="col-lg-6 order-lg-1">
-          <img src="/api/placeholder/600/450" alt="App Interface" class="img-fluid rounded shadow">
+          <img src="{% static 'img/interfaz.png' %}" alt="Interfaz PagoNET" class="img-fluid rounded shadow">
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Testimonials Section -->
-  <section class="py-5">
-    <div class="container">
-      <div class="row justify-content-center text-center mb-5">
-        <div class="col-lg-6">
-          <h2 class="fw-bold mb-3">Lo que dicen nuestros usuarios</h2>
-          <p class="text-muted">Descubra por qué miles de profesionales médicos confían en MediConsult Pro para mejorar su práctica diaria.</p>
+<!-- Testimonios -->
+<section class="py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Lo que dicen nuestros clientes</h2>
+      <p class="text-muted">Miles de empresas ya confían en PagoNET para su gestión de pagos.</p>
+    </div>
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <p class="mb-3">“PagoNET nos ha ahorrado horas de trabajo cada mes. La interfaz es clara y los reportes son muy completos.”</p>
+            <div class="d-flex align-items-center">
+              <img src="{% static 'img/p1.png' %}" alt="Usuario 1" class="rounded-circle me-3" width="50" height="50">
+              <div>
+                <h6 class="mb-0">María López</h6>
+                <small class="text-muted">Contadora - Grupo Éxito</small>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-lg-4 col-md-6 mb-4">
-          <div class="testimonial">
-            <div class="d-flex align-items-center mb-3">
-              <img src="/api/placeholder/70/70" alt="Doctor" class="testimonial-img">
+      <div class="col-md-4 mb-4">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <p class="mb-3">“Con PagoNET automatizamos todos los pagos de nuestra nómina. Es rápido, seguro y confiable.”</p>
+            <div class="d-flex align-items-center">
+              <img src="{% static 'img/p2.png' %}" alt="Usuario 2" class="rounded-circle me-3" width="50" height="50">
               <div>
-                <h5 class="testimonial-author">Dr. Carlos Mendoza</h5>
-                <p class="testimonial-position">Cardiólogo</p>
+                <h6 class="mb-0">Carlos Medina</h6>
+                <small class="text-muted">Gerente General - Textiles Andinos</small>
               </div>
             </div>
-            <p class="mb-0">"MediConsult Pro ha revolucionado mi consultorio. Ahora puedo dedicar más tiempo a mis pacientes y menos a tareas administrativas. La función de historial médico digital es excepcional."</p>
           </div>
         </div>
-        <div class="col-lg-4 col-md-6 mb-4">
-          <div class="testimonial">
-            <div class="d-flex align-items-center mb-3">
-              <img src="/api/placeholder/70/70" alt="Doctor" class="testimonial-img">
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <p class="mb-3">“Excelente soporte y muy fácil de usar. PagoNET es una herramienta imprescindible para nuestro negocio.”</p>
+            <div class="d-flex align-items-center">
+              <img src="{% static 'img/p3.png' %}" alt="Usuario 3" class="rounded-circle me-3" width="50" height="50">
               <div>
-                <h5 class="testimonial-author">Dra. Ana Suárez</h5>
-                <p class="testimonial-position">Pediatra</p>
+                <h6 class="mb-0">Andrea Rivas</h6>
+                <small class="text-muted">Recursos Humanos - Constructora Delta</small>
               </div>
             </div>
-            <p class="mb-0">"La gestión de citas es impecable y mis pacientes aprecian los recordatorios automáticos. La aplicación móvil me permite verificar información importante incluso fuera del consultorio."</p>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 mb-4">
-          <div class="testimonial">
-            <div class="d-flex align-items-center mb-3">
-              <img src="/api/placeholder/70/70" alt="Doctor" class="testimonial-img">
-              <div>
-                <h5 class="testimonial-author">Dr. Miguel Estévez</h5>
-                <p class="testimonial-position">Traumatólogo</p>
-              </div>
-            </div>
-            <p class="mb-0">"Los informes analíticos me han permitido comprender mejor el flujo de mi clínica y tomar decisiones basadas en datos. El soporte técnico es excelente y siempre responden rápidamente."</p>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Pricing Section -->
-  <section class="py-5 bg-light">
-    <div class="container">
-      <div class="row justify-content-center text-center mb-5">
-        <div class="col-lg-6">
-          <h2 class="fw-bold mb-3">Planes flexibles para su práctica</h2>
-          <p class="text-muted">Elija el plan que mejor se adapte a sus necesidades y crezca con nosotros.</p>
-        </div>
+<!-- Llamado a la acción -->
+<section class="py-5 bg-primary text-white text-center">
+  <div class="container">
+    <h2 class="fw-bold mb-3">Comienza a optimizar tu nómina hoy</h2>
+    <p class="mb-4">Únete a miles de empresas que ya usan PagoNET y mejora la eficiencia de tu gestión de pagos.</p>
+    <a href="{% url 'registro' %}" class="btn btn-light btn-lg">Regístrate Gratis</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-white pt-5 pb-4">
+  <div class="container text-center text-md-start">
+    <div class="row text-center text-md-start">
+      <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+        <h5 class="text-uppercase mb-4 fw-bold text-primary">PagoNET</h5>
+        <p>Plataforma digital para automatizar, gestionar y supervisar pagos de forma segura y eficiente.</p>
       </div>
-      <div class="row">
-        <div class="col-lg-4 col-md-6 mb-4">
-          <div class="card h-100 border-0 shadow">
-            <div class="card-body text-center p-5">
-              <h5 class="text-uppercase text-muted mb-3">Básico</h5>
-              <h2 class="display-4 fw-bold mb-3">$49</h2>
-              <p class="text-muted mb-4">por mes</p>
-              <ul class="list-unstyled mb-4">
-                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i> Hasta 200 pacientes</li>
-                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i> Gestión de citas</li>
-                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i> Historial médico básico</li>
-                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i> Recordatorios por email</li>
-                <li class="mb-3 text-muted"><i class="fas fa-times me-2"></i> Chat médico</li>
-                <li class="mb-3 text-muted"><i class="fas fa-times me-2"></i> Análisis avanzados</li>
-              </ul>
-              <a href="#" class="btn btn-outline-primary w-100">Seleccionar plan</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 mb-4">
-          <div class="card h-100 border-0 shadow border-primary" style="transform: scale(1.05);">
-            <div class="card-header bg-primary text-white text-center py-3">
-              <h6 class="mb-0">Recomendado</h6>
-            </div>
-            <div class="card-body text-center p-5">
-              <h5 class="text-uppercase text-muted mb-3">Profesional</h5>
-              <h2 class="display-4 fw-bold mb-3">$99</h2>
-              <p class="text-muted mb-4">por mes</p>
-              <ul class="list-unstyled mb-4">
-                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i> Hasta 500 pacientes</li>
-                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i> Gestión de citas</li>
-                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i> Historial médico completo</li>
-                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i> Recordatorios SMS y email</li>
-                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i> Chat médico</li>
-                <li class="mb-3 text-muted"><i class="fas fa-times me-2"></i> Análisis avanzados</li>
-              </ul>
-              <a href="#" class="btn btn-primary w-100">Seleccionar plan</a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 mb-4">
-          <div class="card h-100 border-0 shadow">
-            <div class="card-body text-center p-5">
-              <h5 class="text-uppercase text-muted mb-3">Empresarial</h5>
-              <h2 class="display-4 fw-bold mb-3">$199</h2>
-              <p class="text-muted mb-4">por mes</p>
-              <ul class="list-unstyled mb-4">
-                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i> Pacientes ilimitados</li>
-                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i> Gestión de citas</li>
-                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i> Historial médico completo</li>
-                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i> Recordatorios personalizados</li>
-                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i> Chat médico</li>
-                <li class="mb-3"><i class="fas fa-check text-primary me-2"></i> Análisis avanzados</li>
-              </ul>
-              <a href="#" class="btn btn-outline-primary w-100">Seleccionar plan</a>
-            </div>
-          </div>
-        </div>
+
+      <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+        <h5 class="text-uppercase mb-4 fw-bold text-primary">Navegación</h5>
+        <p><a href="{% url 'inicio' %}" class="text-white text-decoration-none">Inicio</a></p>
+        <p><a href="{% url 'nomina:empleado_list' %}" class="text-white text-decoration-none">Empleados</a></p>
+        <p><a href="{% url 'nomina:rolpago_list' %}" class="text-white text-decoration-none">Pagos</a></p>
+        <p><a href="{% url 'login' %}" class="text-white text-decoration-none">Iniciar sesión</a></p>
+      </div>
+
+      <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+        <h5 class="text-uppercase mb-4 fw-bold text-primary">Contacto</h5>
+        <p><i class="fas fa-home me-2"></i> Milagro, Ecuador</p>
+        <p><i class="fas fa-envelope me-2"></i> soporte@pagonet.com</p>
+        <p><i class="fas fa-phone me-2"></i> +593 2 345 6789</p>
       </div>
     </div>
-  </section>
+
+    <hr class="my-3">
+    <div class="text-center">
+      <p class="mb-0">&copy; 2025 PagoNET. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</footer>
  
     
   {% endblock content %}

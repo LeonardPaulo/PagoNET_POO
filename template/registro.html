@@ -4,48 +4,252 @@
 
 {% block extra_css %}
 <style>
-    body {
-        background-color: #f8f9fa;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  :root {
+    --primary-color: #2d6cdf;
+    --secondary-color: #17a2b8;
+    --light-bg: #f9fbfc;
+    --dark-color: #1e1e2f;
+    --text-color: #444;
+    --highlight-color: #e8f0fe;
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-color);
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  .navbar {
+    background-color: white !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  .navbar-brand {
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: var(--primary-color) !important;
+  }
+
+  .nav-link {
+    font-weight: 500;
+    color: var(--dark-color);
+    transition: color 0.3s ease;
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    color: var(--primary-color);
+  }
+
+  .btn-primary {
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 30px;
+    padding: 10px 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background-color: var(--secondary-color);
+    color: #fff;
+  }
+
+  .btn-outline-primary {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    border-radius: 30px;
+    padding: 10px 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #e8f0fe 0%, #d9f5f5 100%);
+    padding: 100px 0;
+    position: relative;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--dark-color);
+  }
+
+  .hero p {
+    font-size: 1.15rem;
+    color: #666;
+  }
+
+  .hero-img {
+    animation: float 4s ease-in-out infinite;
+    max-width: 100%;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+  }
+
+  .feature-box {
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+    padding: 30px;
+    transition: all 0.3s ease;
+  }
+
+  .feature-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+  }
+
+  .feature-icon {
+    background: var(--highlight-color);
+    color: var(--primary-color);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+  }
+
+  .testimonial {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    text-align: left;
+  }
+
+  .testimonial-author {
+    font-weight: 600;
+    color: var(--dark-color);
+  }
+
+  .testimonial-position {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+  }
+
+  .app-download {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: #fff;
+    padding: 70px 0;
+  }
+
+  .download-btn {
+    background: #fff;
+    color: var(--primary-color);
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+
+  .download-btn:hover {
+    background-color: #f1f1f1;
+    transform: translateY(-3px);
+  }
+
+  footer {
+    background-color: var(--dark-color);
+    color: rgba(255, 255, 255, 0.75);
+    padding: 60px 0 20px;
+  }
+
+  .footer-link {
+    color: rgba(255, 255, 255, 0.7);
+    display: block;
+    margin-bottom: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .footer-link:hover {
+    color: white;
+    transform: translateX(5px);
+  }
+
+  .social-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    transition: background-color 0.3s ease;
+  }
+
+  .social-icon:hover {
+    background-color: var(--primary-color);
+  }
+
+  .floating-btn {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 56px;
+    height: 56px;
+    background: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    transition: all 0.3s ease;
+    z-index: 1050;
+  }
+
+  .floating-btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-4px);
+  }
+
+  .stats-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    text-align: center;
+  }
+
+  .stats-number {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+  }
+
+  .stats-text {
+    color: var(--text-color);
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 767.98px) {
+    .hero h1 {
+      font-size: 2rem;
     }
-    .navbar {
-        background: linear-gradient(135deg, #0d6efd, #0dcaf0);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    .hero p {
+      font-size: 1rem;
     }
-    .card {
-        border-radius: 10px;
-        box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-    }
-    .btn-primary {
-        background: linear-gradient(135deg, #0d6efd, #0b5ed7);
-        border: none;
-        box-shadow: 0 4px 8px rgba(13, 110, 253, 0.25);
-        transition: all 0.3s;
-    }
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 12px rgba(13, 110, 253, 0.4);
-    }
-    .form-control {
-        border-radius: 8px;
-        padding: 12px 15px;
-        border: 1px solid #ced4da;
-        transition: all 0.3s;
-    }
-    .form-control:focus {
-        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-        border-color: #86b7fe;
-    }
-    .form-label {
-        font-weight: 500;
-        margin-bottom: 0.5rem;
-        color: #495057;
-    }
+  }
 </style>
 {% endblock %}
 
