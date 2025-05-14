@@ -192,16 +192,20 @@ class RolForm(forms.ModelForm):
     )
     aniomes = forms.DateField(
         widget=forms.DateInput(attrs={
+            'type': 'date',
             'class': 'form-control',
-            'type': 'month'
-        }),
-        label='Periodo'
+            'style': 'height: 70px;'
+        },
+            format='%Y-%m-%d'
+        ),
+        input_formats=['%Y-%m-%d']
     )
     sueldo = forms.DecimalField(
         widget=forms.NumberInput(attrs={
             'class': 'form-control',
             'step': '0.01',
-            'placeholder': 'Ingrese el sueldo',
+            'min': '0',
+            'readonly': 'readonly'
         }),
         label='Sueldo Base'
     )
@@ -268,7 +272,8 @@ class RolForm(forms.ModelForm):
                 'class': 'form-control',
                 'step': '0.01',
                 'min': '0',
-                'placeholder': 'Ingrese el sueldo base'
+                'placeholder': 'Ingrese el sueldo base',
+                'readonly': 'readonly'
             }),
             'horas_extra': NumberInput(attrs={
                 'class': 'form-control',

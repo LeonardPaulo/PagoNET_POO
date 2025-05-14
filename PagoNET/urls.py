@@ -29,6 +29,7 @@ urlpatterns = [
     path('registro/', registro, name='registro'),  # URL for the register view
     path('cerrar_sesion/', cerrar_sesion, name='logout'),  # URL for the logout view
     path('iniciar_sesion/', iniciar_sesion, name='login'),  # URL for the login view
+    path('nomina/', include('nomina.urls')),
 
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,10 +1,12 @@
 from django.urls import path
 from nomina.views import empleado_create, empleado_list, empleado_update, empleado_delete, cargo_list, cargo_create, cargo_update, cargo_delete, departamento_list, departamento_create, departamento_update, departamento_delete, rolpago_list, rolpago_create, rolpago_update, rolpago_delete, tipocontrato_list, tipocontrato_create, tipocontrato_update, tipocontrato_delete, registro
+from . import views
 app_name = 'nomina'  # Nombre de la aplicación para el espacio de nombres
 urlpatterns = [
     #path('registro/', registro, name='registro'),  # URL para la vista de registro
     path('empleado_list/',empleado_list, name='empleado_list'),  # URL para la vista home
     path('empleado_create/',empleado_create, name='empleado_create'),  # URL para la vista home
+    path('empleado/<int:empleado_id>/sueldo/', views.obtener_sueldo_empleado, name='obtener_sueldo_empleado'),
     path('empleado_update/<int:id>/',empleado_update, name='empleado_update'),
     path('empleado_delete/<int:id>/',empleado_delete, name='empleado_delete'),
     path('cargo_list/',cargo_list, name='cargo_list'),  # URL para la vista home

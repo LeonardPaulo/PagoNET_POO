@@ -136,6 +136,20 @@ def empleado_create(request):
         #return JsonResponse({"message": "voy a crear un doctor"})
 
 @user_passes_test(is_superuser, login_url='/iniciar_sesion/')
+def obtener_sueldo_empleado(request, empleado_id):
+    try:
+        empleado = Empleado.objects.get(pk=empleado_id)
+        return JsonResponse({
+            'status': 'success',
+            'sueldo': empleado.sueldo
+        })
+    except Empleado.DoesNotExist:
+        return JsonResponse({
+            'status': 'error',
+            'message': 'Empleado no encontrado'
+        }, status=404)
+
+@user_passes_test(is_superuser, login_url='/iniciar_sesion/')
 def empleado_update(request,id):
     context={'title':'Actualizar Empleado'}
     empleado = Empleado.objects.get(pk=id)
