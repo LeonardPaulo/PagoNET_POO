@@ -3,7 +3,13 @@ from django.shortcuts import render, redirect
 from .models import Empleado, Cargo, Departamento, TipoContrato, Rol
 from .forms import EmpleadoForm, CargoForm, DepartamentoForm, TipoContratoForm, RolForm
 from django.db.models import Q
-from django.contrib.auth.forms import UserCreationForm
+from django.core.paginator import Paginator
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
+#from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, logout, authenticate
+from django.db import IntegrityError
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 def home(request):
     data = {
@@ -18,31 +24,94 @@ def home(request):
     #return JsonResponse(data)  
     return render(request, 'home.html', data)
 
-def singup(request):
-    return HttpResponse("<h1>Hola Mundo, Mi primer pagina con django</h1>")
+def is_superuser(user):
+    return user.is_superuser
+# Decorador para verificar si el usuario es superusuario
 
+def registro(request):
+    if request.method == 'GET':    
+        return render(request, 'registro.html', {
+            'form': UserCreationForm
+        })
+    else:
+        if request.POST['password1'] == request.POST['password2']:
+            try: 
+                # Crear el usuario y guardarlo directamente
+                user = User.objects.create_user(
+                    username=request.POST['username'], 
+                    password=request.POST['password1']
+                )
+                login(request, user)
+                return redirect('inicio')  # Redirige a la vista 'home'
+            except IntegrityError:
+                return render(request, 'registro.html', {
+                    'form': UserCreationForm,
+                    'error': 'El usuario ya existe'
+                })
+        return render(request, 'registro.html', {
+            'form': UserCreationForm,
+            'error': 'Las contraseñas no coinciden'
+        })
+    
+def cerrar_sesion(request):
+    logout(request)
+    return redirect('inicio')  # Redirige a la vista 'home'
+
+def iniciar_sesion(request):
+    if request.method == 'GET':
+        return render(request, 'iniciar_sesion.html',{
+        'form': AuthenticationForm,
+    })
+    else:
+        user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
+        if user is None:
+            return render(request, 'iniciar_sesion.html',{
+                'form': AuthenticationForm,
+                'error': 'Usuario o contraseña incorrectos'
+            })
+        else:
+            login(request, user)
+            return redirect('inicio')
+
+@login_required
 def empleado_list(request):
     query = request.GET.get('q', None)
+    order_by = request.GET.get('order_by', 'nombre')
+    direction = request.GET.get('direction', 'asc')
+    
     if query:
-        empleados = Empleado.objects.filter(
+        empleados_list = Empleado.objects.filter(
             Q(nombre__icontains=query) |          # Búsqueda por nombre
             Q(cedula__icontains=query) |          # Búsqueda por cédula
             Q(direccion__icontains=query) |       # Búsqueda por dirección
             Q(cargo__descripcion__icontains=query) |  # Búsqueda por cargo
             Q(departamento__descripcion__icontains=query) |  # Búsqueda por departamento
             Q(tipo_contrato__descripcion__icontains=query) |  # Búsqueda por tipo de contrato
-            Q(sexo__icontains=query)              # Búsqueda por sexo 
+            Q(sexo__icontains=query)              # Búsqueda por sexo (M/F)
         ).distinct().order_by('nombre')  # Orden alfabético por nombre
     else:
-        empleados = Empleado.objects.all().order_by('nombre')
+        empleados_list = Empleado.objects.all()
+    
+    # Aplicar ordenamiento
+    if direction == 'desc':
+        order_by = f'-{order_by}'
+    
+    empleados_list = empleados_list.order_by(order_by)
+    
+    paginator = Paginator(empleados_list, 4)
+    page_number = request.GET.get('page')
+    empleados = paginator.get_page(page_number)
     
     context = {
         'empleados': empleados,
         'title': 'Listado de empleados',
-        'query': query  # Para mantener el término de búsqueda en el template
+        'query': query,
+        'order_by': order_by.replace('-', '') if '-' in order_by else order_by,
+        'direction': direction
     }
     return render(request, 'empleado/list.html', context)
 
+@user_passes_test(is_superuser, login_url='/iniciar_sesion/')
 def empleado_create(request):
     context={'title':'Ingresar Empleado'}
     print("metodo: ",request.method)
@@ -66,6 +135,7 @@ def empleado_create(request):
             return render(request, 'empleado/create.html',context) 
         #return JsonResponse({"message": "voy a crear un doctor"})
 
+@user_passes_test(is_superuser, login_url='/iniciar_sesion/')
 def empleado_update(request,id):
     context={'title':'Actualizar Empleado'}
     empleado = Empleado.objects.get(pk=id)
@@ -82,6 +152,7 @@ def empleado_update(request,id):
             context['form'] = form
             return render(request, 'empleado/create.html', context)
 
+@user_passes_test(is_superuser, login_url='/iniciar_sesion/')
 def empleado_delete(request,id):
     empleado=None
     try:
@@ -96,22 +167,43 @@ def empleado_delete(request,id):
         context = {'title':'Datos del Empleado','empleado':empleado,'error':'Error al eliminar al empleado'}
         return render(request, 'empleado/delete.html',context)
 
+@login_required
 def cargo_list(request):
-    # doctors = Doctor.objects.all()
-    # print("doctors: ",doctors)
-    # print("doctores: ",doctors.values())
-    # print("metodo: ",request.method)
-    # print("valor de get: ",request.GET,request.GET.get('q'))
-    # return JsonResponse(list(doctors.values()), safe=False)
     query = request.GET.get('q', None)
+    order_by = request.GET.get('order_by', 'id')
+    direction = request.GET.get('direction', 'asc')  # Valor por defecto: ascendente
     print(query)
+    
     if query:
-        cargos = Cargo.objects.filter(descripcion__icontains=query)
+        cargos_list = Cargo.objects.filter(descripcion__icontains=query)
     else:
-        cargos = Cargo.objects.all()
-    context = {'cargos': cargos, 'title': 'Listado de cargos'}
+        cargos_list = Cargo.objects.all()
+    
+    # Aplicar ordenamiento
+    if order_by == 'nombre':
+        field = 'descripcion'
+    else:
+        field = 'id'
+    
+    if direction == 'desc':
+        field = f'-{field}'
+    
+    cargos_list = cargos_list.order_by(field)
+    
+    paginator = Paginator(cargos_list, 4)
+    page_number = request.GET.get('page')
+    cargos = paginator.get_page(page_number)
+    
+    context = {
+        'cargos': cargos,
+        'title': 'Listado de cargos',
+        'query': query,
+        'order_by': order_by,
+        'direction': direction
+    }
     return render(request, 'cargo/list.html', context)
 
+@user_passes_test(is_superuser, login_url='/iniciar_sesion/')
 def cargo_create(request):
     context = {'title': 'Ingresar Cargo'}
     print("metodo: ", request.method)
@@ -135,6 +227,7 @@ def cargo_create(request):
             return render(request, 'cargo/create.html', context)
         #return JsonResponse({"message": "voy a crear un doctor"})
 
+@user_passes_test(is_superuser, login_url='/iniciar_sesion/')
 def cargo_update(request, id):
     context = {'title': 'Actualizar Cargo'}
     cargo = Cargo.objects.get(pk=id)
@@ -151,6 +244,7 @@ def cargo_update(request, id):
             context['form'] = form
             return render(request, 'cargo/create.html', context)
 
+@user_passes_test(is_superuser, login_url='/iniciar_sesion/')
 def cargo_delete(request, id):
     cargo = None
     try:
@@ -165,22 +259,37 @@ def cargo_delete(request, id):
         context = {'title': 'Datos del Cargo', 'cargo': cargo, 'error': 'Error al eliminar el cargo'}
         return render(request, 'cargo/delete.html', context)
 
+@login_required
 def departamento_list(request):
-    # doctors = Doctor.objects.all()
-    # print("doctors: ",doctors)
-    # print("doctores: ",doctors.values())
-    # print("metodo: ",request.method)
-    # print("valor de get: ",request.GET,request.GET.get('q'))
-    # return JsonResponse(list(doctors.values()), safe=False)
     query = request.GET.get('q', None)
-    print(query)
+    order_by = request.GET.get('order_by', 'id')
+    direction = request.GET.get('direction', 'asc')
+    
     if query:
-        departamentos = Departamento.objects.filter(descripcion__icontains=query)
+        departamentos_list = Departamento.objects.filter(descripcion__icontains=query)
     else:
-        departamentos = Departamento.objects.all()
-    context = {'departamentos': departamentos, 'title': 'Listado de departamentos'}
+        departamentos_list = Departamento.objects.all()
+    
+    # Aplicar ordenamiento
+    if direction == 'desc':
+        order_by = f'-{order_by}'
+    
+    departamentos_list = departamentos_list.order_by(order_by)
+    
+    paginator = Paginator(departamentos_list, 4)
+    page_number = request.GET.get('page')
+    departamentos = paginator.get_page(page_number)
+    
+    context = {
+        'departamentos': departamentos,
+        'title': 'Listado de departamentos',
+        'query': query,
+        'order_by': order_by.replace('-', '') if '-' in order_by else order_by,
+        'direction': direction
+    }
     return render(request, 'departamento/list.html', context)
 
+@user_passes_test(is_superuser, login_url='/iniciar_sesion/')
 def departamento_create(request):
     context = {'title': 'Ingresar Departamento'}
     print("metodo: ", request.method)
@@ -204,6 +313,7 @@ def departamento_create(request):
             return render(request, 'departamento/create.html', context)
         #return JsonResponse({"message": "voy a crear un doctor"})
 
+@user_passes_test(is_superuser, login_url='/iniciar_sesion/')
 def departamento_update(request, id):
     context = {'title': 'Actualizar Departamento'}
     departamento = Departamento.objects.get(pk=id)
@@ -220,6 +330,7 @@ def departamento_update(request, id):
             context['form'] = form
             return render(request, 'departamento/create.html', context)
 
+@user_passes_test(is_superuser, login_url='/iniciar_sesion/')
 def departamento_delete(request, id):
     departamento = None
     try:
@@ -234,22 +345,37 @@ def departamento_delete(request, id):
         context = {'title': 'Datos del Departamento', 'departamento': departamento, 'error': 'Error al eliminar el departamento'}
         return render(request, 'departamento/delete.html', context)
 
+@login_required
 def tipocontrato_list(request):
-    # doctors = Doctor.objects.all()
-    # print("doctors: ",doctors)
-    # print("doctores: ",doctors.values())
-    # print("metodo: ",request.method)
-    # print("valor de get: ",request.GET,request.GET.get('q'))
-    # return JsonResponse(list(doctors.values()), safe=False)
     query = request.GET.get('q', None)
-    print(query)
+    order_by = request.GET.get('order_by', 'id')
+    direction = request.GET.get('direction', 'asc')
+    
     if query:
-        tipos_contrato = TipoContrato.objects.filter(descripcion__icontains=query)
+        tipos_contrato_list = TipoContrato.objects.filter(descripcion__icontains=query)
     else:
-        tipos_contrato = TipoContrato.objects.all()
-    context = {'tipos_contrato': tipos_contrato, 'title': 'Listado de tipos de contrato'}
+        tipos_contrato_list = TipoContrato.objects.all()
+    
+    # Aplicar ordenamiento
+    if direction == 'desc':
+        order_by = f'-{order_by}'
+    
+    tipos_contrato_list = tipos_contrato_list.order_by(order_by)
+    
+    paginator = Paginator(tipos_contrato_list, 4)
+    page_number = request.GET.get('page')
+    tipos_contrato = paginator.get_page(page_number)
+    
+    context = {
+        'tipos_contrato': tipos_contrato,
+        'title': 'Listado de tipos de contrato',
+        'query': query,
+        'order_by': order_by.replace('-', '') if '-' in order_by else order_by,
+        'direction': direction
+    }
     return render(request, 'tipocontrato/list.html', context)
 
+@user_passes_test(is_superuser, login_url='/iniciar_sesion/')
 def tipocontrato_create(request):
     context = {'title': 'Ingresar Tipo de Contrato'}
     print("metodo: ", request.method)
@@ -273,6 +399,7 @@ def tipocontrato_create(request):
             return render(request, 'tipocontrato/create.html', context)
         #return JsonResponse({"message": "voy a crear un doctor"})
 
+@user_passes_test(is_superuser, login_url='/iniciar_sesion/')
 def tipocontrato_update(request, id):
     context = {'title': 'Actualizar Tipo de Contrato'}
     tipo_contrato = TipoContrato.objects.get(pk=id)
@@ -289,6 +416,7 @@ def tipocontrato_update(request, id):
             context['form'] = form
             return render(request, 'tipo_contrato/create.html', context)
 
+@user_passes_test(is_superuser, login_url='/iniciar_sesion/')
 def tipocontrato_delete(request, id):
     tipo_contrato = None
     try:
@@ -303,31 +431,47 @@ def tipocontrato_delete(request, id):
         context = {'title': 'Datos del Tipo de Contrato', 'tipo_contrato': tipo_contrato, 'error': 'Error al eliminar el tipo de contrato'}
         return render(request, 'tipocontrato/delete.html', context)
 
+@login_required
 def rolpago_list(request):
     query = request.GET.get('q', None)
+    order_by = request.GET.get('order_by', '-aniomes')
+    direction = request.GET.get('direction', 'asc')
     
     if query:
-        roles = Rol.objects.filter(
-            Q(empleado__nombre__icontains=query) |    # Búsqueda por nombre de empleado
-            Q(empleado__cedula__icontains=query) |    # Búsqueda por cédula de empleado
-            Q(aniomes__icontains=query) |             # Búsqueda por periodo (formato YYYY-MM)
-            Q(sueldo__icontains=query) |              # Búsqueda por monto de sueldo
-            Q(horas_extra__icontains=query) |         # Búsqueda por horas extra
-            Q(bono__icontains=query) |                # Búsqueda por bono
-            Q(neto__icontains=query) |                # Búsqueda por neto
-            Q(empleado__cargo__descripcion__icontains=query) |  # Búsqueda por cargo del empleado
-            Q(empleado__departamento__descripcion__icontains=query)  # Búsqueda por departamento
-        ).distinct().order_by('-aniomes', 'empleado__nombre')  # Orden por fecha descendente y nombre
+        roles_list = Rol.objects.filter(
+            Q(empleado__nombre__icontains=query) |
+            Q(empleado__cedula__icontains=query) |
+            Q(aniomes__icontains=query) |
+            Q(sueldo__icontains=query) |
+            Q(horas_extra__icontains=query) |
+            Q(bono__icontains=query) |
+            Q(neto__icontains=query) |
+            Q(empleado__cargo__descripcion__icontains=query) |
+            Q(empleado__departamento__descripcion__icontains=query)
+        ).distinct()
     else:
-        roles = Rol.objects.all().order_by('-aniomes', 'empleado__nombre')
+        roles_list = Rol.objects.all()
+    
+    # Aplicar ordenamiento
+    if direction == 'desc':
+        order_by = f'-{order_by}'
+    
+    roles_list = roles_list.order_by(order_by)
+    
+    paginator = Paginator(roles_list, 4)
+    page_number = request.GET.get('page')
+    roles = paginator.get_page(page_number)
     
     context = {
         'roles': roles,
         'title': 'Listado de roles de pago',
-        'query': query  # Para mantener el término de búsqueda en el template
+        'query': query,
+        'order_by': order_by.replace('-', '') if '-' in order_by else order_by,
+        'direction': direction
     }
     return render(request, 'rolpago/list.html', context)
 
+@user_passes_test(is_superuser, login_url='/iniciar_sesion/')
 def rolpago_create(request):
     if request.method == "POST":
         form = RolForm(request.POST)
@@ -345,6 +489,7 @@ def rolpago_create(request):
     
     return render(request, 'rolpago/create.html', {'form': form, 'title': 'Ingresar Rol de Pago'})
 
+@user_passes_test(is_superuser, login_url='/iniciar_sesion/')
 def rolpago_update(request, id):
     context = {'title': 'Actualizar Rol de Pago'}
     rol_pago = Rol.objects.get(pk=id)
@@ -361,6 +506,7 @@ def rolpago_update(request, id):
             context['form'] = form
             return render(request, 'rol_pago/create.html', context)
 
+@user_passes_test(is_superuser, login_url='/iniciar_sesion/')
 def rolpago_delete(request, id):
     rol_pago = None
     try:

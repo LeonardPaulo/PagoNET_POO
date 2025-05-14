@@ -19,13 +19,16 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf.urls.static import static
 from nomina.views import home
-from nomina import views
+from nomina.views import registro, cerrar_sesion, iniciar_sesion
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='inicio'),  # URL for the home view # URL for the register view
     path('company/', include('nomina.urls',namespace='nomina')), 
-    path('singup', views.singup, name='singup'),  # URL for the register view
+    path('registro/', registro, name='registro'),  # URL for the register view
+    path('cerrar_sesion/', cerrar_sesion, name='logout'),  # URL for the logout view
+    path('iniciar_sesion/', iniciar_sesion, name='login'),  # URL for the login view
+
     
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -119,9 +119,11 @@
     </form>
 
     <div class="d-flex justify-content-end mb-4">
+        {% if user.is_superuser %}
         <a class="btn btn-success" href="{% url 'nomina:departamento_create' %}">
             <i class="fas fa-plus me-2"></i>Nuevo Departamento
         </a>
+        {% endif %}
     </div>
 
     <div class="card mb-4">
@@ -130,9 +132,19 @@
                 <table class="table table-hover mb-0">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Descripción</th>
+                            <th scope="col">
+                                <a href="?order_by=id&direction={% if order_by == 'id' and direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                                    N° {% if order_by == 'id' %}{% if direction == 'asc' %}↓{% else %}↑{% endif %}{% endif %}
+                                </a>
+                            </th>
+                            <th scope="col">
+                                <a href="?order_by=descripcion&direction={% if order_by == 'descripcion' and direction == 'asc' %}desc{% else %}asc{% endif %}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+                                    Departamento {% if order_by == 'descripcion' %}{% if direction == 'asc' %}↓{% else %}↑{% endif %}{% endif %}
+                                </a>
+                            </th>
+                            {% if user.is_superuser %}
                             <th scope="col" class="text-center">Acciones</th>
+                            {% endif %}
                         </tr>
                     </thead>
                     <tbody>
@@ -141,12 +153,14 @@
                             <th scope="row">{{ departamento.id }}</th>
                             <td>{{ departamento.descripcion }}</td>
                             <td class="text-center">
+                                {% if user.is_superuser %}
                                 <a href="{% url 'nomina:departamento_update' departamento.id %}" class="btn btn-sm btn-primary me-1">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <a href="{% url 'nomina:departamento_delete' departamento.id %}" class="btn btn-sm btn-danger">
                                     <i class="fas fa-trash"></i>
                                 </a>
+                                {% endif %}
                             </td>
                         </tr>
                         {% empty %}
@@ -160,17 +174,35 @@
         </div>
     </div>
     <nav aria-label="Page navigation" class="mb-4">
-            <ul class="pagination justify-content-center">
+        <ul class="pagination justify-content-center">
+            {% if departamentos.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ departamentos.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if order_by %}&order_by={{ order_by }}{% endif %}{% if direction %}&direction={{ direction }}{% endif %}">Anterior</a>
+                </li>
+            {% else %}
                 <li class="page-item disabled">
                     <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Anterior</a>
                 </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
+            {% endif %}
+
+            {% for num in departamentos.paginator.page_range %}
+                {% if departamentos.number == num %}
+                    <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if order_by %}&order_by={{ order_by }}{% endif %}{% if direction %}&direction={{ direction }}{% endif %}">{{ num }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if departamentos.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="#">Siguiente</a>
+                    <a class="page-link" href="?page={{ departamentos.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if order_by %}&order_by={{ order_by }}{% endif %}{% if direction %}&direction={{ direction }}{% endif %}">Siguiente</a>
                 </li>
-            </ul>
-        </nav>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" aria-disabled="true">Siguiente</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
 </div>
 {% endblock %}

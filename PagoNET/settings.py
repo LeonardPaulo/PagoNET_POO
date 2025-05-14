@@ -123,7 +123,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 # carpeta de achivos de Imagenes
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/' # url de imagenes
-# Default primary key field type
+LOGIN_URL = '/registro/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

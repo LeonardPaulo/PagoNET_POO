@@ -1,7 +1,8 @@
 from django.urls import path
-from nomina.views import empleado_create, empleado_list, empleado_update, empleado_delete, cargo_list, cargo_create, cargo_update, cargo_delete, departamento_list, departamento_create, departamento_update, departamento_delete, rolpago_list, rolpago_create, rolpago_update, rolpago_delete, tipocontrato_list, tipocontrato_create, tipocontrato_update, tipocontrato_delete
+from nomina.views import empleado_create, empleado_list, empleado_update, empleado_delete, cargo_list, cargo_create, cargo_update, cargo_delete, departamento_list, departamento_create, departamento_update, departamento_delete, rolpago_list, rolpago_create, rolpago_update, rolpago_delete, tipocontrato_list, tipocontrato_create, tipocontrato_update, tipocontrato_delete, registro
 app_name = 'nomina'  # Nombre de la aplicación para el espacio de nombres
 urlpatterns = [
+    #path('registro/', registro, name='registro'),  # URL para la vista de registro
     path('empleado_list/',empleado_list, name='empleado_list'),  # URL para la vista home
     path('empleado_create/',empleado_create, name='empleado_create'),  # URL para la vista home
     path('empleado_update/<int:id>/',empleado_update, name='empleado_update'),
