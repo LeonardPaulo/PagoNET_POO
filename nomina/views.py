@@ -98,7 +98,7 @@ def empleado_list(request):
     
     empleados_list = empleados_list.order_by(order_by)
     
-    paginator = Paginator(empleados_list, 4)
+    paginator = Paginator(empleados_list, 3)
     page_number = request.GET.get('page')
     empleados = paginator.get_page(page_number)
     
@@ -204,7 +204,7 @@ def cargo_list(request):
     
     cargos_list = cargos_list.order_by(field)
     
-    paginator = Paginator(cargos_list, 4)
+    paginator = Paginator(cargos_list, 3)
     page_number = request.GET.get('page')
     cargos = paginator.get_page(page_number)
     
@@ -290,7 +290,7 @@ def departamento_list(request):
     
     departamentos_list = departamentos_list.order_by(order_by)
     
-    paginator = Paginator(departamentos_list, 4)
+    paginator = Paginator(departamentos_list, 3)
     page_number = request.GET.get('page')
     departamentos = paginator.get_page(page_number)
     
@@ -376,7 +376,7 @@ def tipocontrato_list(request):
     
     tipos_contrato_list = tipos_contrato_list.order_by(order_by)
     
-    paginator = Paginator(tipos_contrato_list, 4)
+    paginator = Paginator(tipos_contrato_list, 3)
     page_number = request.GET.get('page')
     tipos_contrato = paginator.get_page(page_number)
     
@@ -472,7 +472,7 @@ def rolpago_list(request):
     
     roles_list = roles_list.order_by(order_by)
     
-    paginator = Paginator(roles_list, 4)
+    paginator = Paginator(roles_list, 3)
     page_number = request.GET.get('page')
     roles = paginator.get_page(page_number)
     
